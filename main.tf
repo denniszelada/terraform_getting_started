@@ -25,8 +25,13 @@ resource "aws_launch_configuration" "example" {
 
 }
 
+data "aws_subnet_ids" "default" {
+  vpc_id = data.aws_vpc.default.id
+}
+
 resource "aws_autoscaling_group" "example" {
   launch_configuration = aws_launch_configuration.example.name
+  vpc_zone_identifier  = data.aws_subnet_ids.default.ids
 
   min_size = 2
   max_size = 10
